@@ -1,0 +1,7 @@
+[package]
+name = "pythagoras"
+version = "0.1.0"
+description = "Simple helper functions to calculate sides and angles."
+authors = ["David Skyberg <david.skyberg@example.com>"]
+license = "MIT OR Apache-2.0"
+edition = "2024"
