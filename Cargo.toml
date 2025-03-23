@@ -5,3 +5,8 @@ description = "Simple helper functions to calculate sides and angles."
 authors = ["David Skyberg <david.skyberg@example.com>"]
 license = "MIT OR Apache-2.0"
 edition = "2024"
+
+[dependencies]
+anyhow = "1.0.97"
+serde = { version = "1.0.219", features = ["derive"] }
+thiserror = "2.0.12"
