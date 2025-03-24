@@ -1,0 +1,2 @@
+window.ALL_CRATES = ["anyhow","proc_macro2","pythagoras","quote","serde","serde_derive","syn","thiserror","thiserror_impl","unicode_ident"];
+//{"start":21,"fragment_lengths":[8,14,13,8,8,15,6,12,17,16]}
