@@ -56,7 +56,6 @@
 //!  let result = RightAngle::try_from(json.as_str()).expect("Failed to convert");
 //!  assert_eq!(result, RIGHT_ANGLE);
 //! ```
-
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -67,8 +66,6 @@ use crate::{ab_c, ab_r, ac_b, ac_r, bc_a, bc_r, ra_bc, rb_ac, rc_ab};
 enum RightAngleError {
     #[error("There must be at least one side")]
     TooFewSides,
-    #[error("Too many sides were provided for this method")]
-    TooManySides,
     #[error("Angle is required when only one side is provided")]
     AngleRequired,
     #[error("Invalid input")]
@@ -77,31 +74,40 @@ enum RightAngleError {
 
 #[derive(Debug, Clone, Deserialize, Serialize, PartialEq)]
 pub struct RightAngle {
+    /// The angle in radians.  You can flip to degrees with `angle.to_degrees()`
     pub radians: f32,
+    /// The opposite side, or `a'
     pub rise: f32,
+    /// The adjacent side, or `b`
     pub run: f32,
+    /// The hypotenuse, or `c`
     pub diagonal: f32,
 }
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct RightAngleInput {
+    /// The angle in radians.  You can flip to degrees with `angle.to_degrees()`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub radians: Option<f32>,
+    /// The opposite side, or `a'
     #[serde(skip_serializing_if = "Option::is_none")]
     pub rise: Option<f32>,
+    /// The adjacent side, or `b`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub run: Option<f32>,
+    /// The hypotenuse, or `c`
     #[serde(skip_serializing_if = "Option::is_none")]
     pub diagonal: Option<f32>,
 }
 
 /// Given the angle (in radians) and one side, calculate the other two sides.
-/// Note, this will throw if more than 1 side is provided.
-fn one_side(input: &RightAngleInput) -> Result<RightAngle> {
+/// Note, the first side found will be used, in order of rise (a), run (b), diagonal (c).
+/// An error is returned if no side is provided or the ange is not provided.
+pub fn one_side(input: &RightAngleInput) -> Result<RightAngle> {
     let radians = input.radians.ok_or(RightAngleError::AngleRequired)?;
 
     match (input.rise, input.run, input.diagonal) {
-        (Some(a), None, None) => {
+        (Some(a), _, _) => {
             let (b, c) = ra_bc(&radians, &a);
             Ok(RightAngle {
                 radians,
@@ -110,7 +116,7 @@ fn one_side(input: &RightAngleInput) -> Result<RightAngle> {
                 diagonal: c,
             })
         }
-        (None, Some(b), None) => {
+        (_, Some(b), _) => {
             let (a, c) = rb_ac(&radians, &b);
             Ok(RightAngle {
                 radians,
@@ -119,7 +125,7 @@ fn one_side(input: &RightAngleInput) -> Result<RightAngle> {
                 diagonal: c,
             })
         }
-        (None, None, Some(c)) => {
+        (_, _, Some(c)) => {
             let (a, b) = rc_ab(&radians, &c);
             Ok(RightAngle {
                 radians,
@@ -128,34 +134,28 @@ fn one_side(input: &RightAngleInput) -> Result<RightAngle> {
                 diagonal: c,
             })
         }
-        (None, None, None) => Err(RightAngleError::TooFewSides.into()),
-        _ => Err(RightAngleError::TooManySides.into()),
+        _ => Err(RightAngleError::TooFewSides.into()),
     }
 }
 
 /// Given two sides, calculate the third side.
-/// An error is thrown if not enough sides are provided.
-fn two_sides(input: &RightAngleInput) -> Result<RightAngle> {
+/// The angle is always calculated from the two sides given
+/// An error is returned if not enough sides are provided.
+pub fn two_sides(input: &RightAngleInput) -> Result<RightAngle> {
     match (input.rise, input.run, input.diagonal) {
-        (Some(a), Some(b), Some(c)) => Ok(RightAngle {
-            rise: a,
-            run: b,
-            diagonal: c,
-            radians: input.radians.unwrap_or_else(|| ab_r(&a, &b)),
-        }),
-        (Some(a), Some(b), None) => Ok(RightAngle {
+        (Some(a), Some(b), _) => Ok(RightAngle {
             rise: a,
             run: b,
             diagonal: ab_c(&a, &b),
             radians: input.radians.unwrap_or_else(|| ab_r(&a, &b)),
         }),
-        (Some(a), None, Some(c)) => Ok(RightAngle {
+        (Some(a), _, Some(c)) => Ok(RightAngle {
             rise: a,
             run: ac_b(&a, &c),
             diagonal: c,
             radians: input.radians.unwrap_or_else(|| ac_r(&a, &c)),
         }),
-        (None, Some(b), Some(c)) => Ok(RightAngle {
+        (_, Some(b), Some(c)) => Ok(RightAngle {
             rise: bc_a(&b, &c),
             run: b,
             diagonal: c,
@@ -165,6 +165,8 @@ fn two_sides(input: &RightAngleInput) -> Result<RightAngle> {
     }
 }
 
+/// Given three sides, calculate the anglee.
+/// The angle is calculated from the rise (a) and the run (b)
 fn three_sides(input: &RightAngleInput) -> Result<RightAngle> {
     let rise = input.rise.unwrap();
     let run = input.run.unwrap();
@@ -182,6 +184,35 @@ fn three_sides(input: &RightAngleInput) -> Result<RightAngle> {
     })
 }
 
+/// # Example
+/// Create [RightAngle] from [RightAngleInput].
+///
+/// ```rust
+/// use pythagoras::right_angle::{RightAngle, RightAngleInput};
+///
+/// // Using the standard 3,4,5 right triangle
+/// const A:f32 = 3.0;
+/// const B:f32 = 4.0;
+/// const C:f32 = 5.0;
+/// const R: f32 = 0.6435011;
+///
+/// const RIGHT_ANGLE: RightAngle = RightAngle {
+///     rise: A,
+///     run: B,
+///     diagonal: C,
+///     radians: R,
+/// };
+///
+/// let input = RightAngleInput {
+///     rise: Some(A),
+///     run: Some(B),
+///     diagonal: None,
+///     radians: None,
+/// };
+///
+///  let result = RightAngle::try_from(&input).expect("Failed to convert");
+///  assert_eq!(result, RIGHT_ANGLE);
+/// ```
 impl TryFrom<&RightAngleInput> for RightAngle {
     type Error = String;
     fn try_from(input: &RightAngleInput) -> Result<Self, Self::Error> {
@@ -223,8 +254,36 @@ impl TryFrom<&str> for RightAngle {
 impl RightAngle {
     /// There are 2 ways to use this method.
     /// 1. Given 1 side and the angle, find the other 2 sides
-    /// 2. Given 2 sides, find the third
+    /// 2. Given 2 sides, find the third (and the angle, if not provided)
     /// 3. Given 3 sides, find the angle
+    ///
+    /// # Example
+    ///
+    /// ```rust
+    /// use pythagoras::right_angle::{RightAngle, RightAngleInput};
+    ///
+    /// // Using the standard 3,4,5 right triangle
+    /// const A:f32 = 3.0;
+    /// const B:f32 = 4.0;
+    /// const C:f32 = 5.0;
+    /// const R: f32 = 0.6435011;
+    ///
+    /// const RIGHT_ANGLE: RightAngle = RightAngle {
+    ///     rise: A,
+    ///     run: B,
+    ///     diagonal: C,
+    ///     radians: R,
+    /// };
+    ///
+    /// let input = RightAngleInput {
+    ///     rise: Some(A),
+    ///     run: Some(B),
+    ///     diagonal: None,
+    ///     radians: None,
+    /// };
+    /// let result = RightAngle::from_input(&input).expect("Failed to convert");
+    /// assert_eq!(result, RIGHT_ANGLE);
+    /// ```
     pub fn from_input(input: &RightAngleInput) -> Result<Self> {
         let mut side_count = 0;
         if input.rise.is_some() {

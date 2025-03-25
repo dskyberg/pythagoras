@@ -1,1 +1,1 @@
-window.SIDEBAR_ITEMS = {"struct":["RightAngle","RightAngleInput"]};
+window.SIDEBAR_ITEMS = {"fn":["one_side","two_sides"],"struct":["RightAngle","RightAngleInput"]};
