@@ -1,0 +1,29 @@
+[config]
+skip_core_tasks = false
+
+[tasks.pre]
+command = "rm"
+args = ["-rf", "docs/"]
+
+[tasks.doc-test]
+dependencies = ["pre"]
+command = "cargo"
+args = ["test", "--doc"]
+
+[tasks.run-doc]
+dependencies=["doc-test"]
+command = "cargo"
+args = ["doc", "--no-deps"]
+
+[tasks.move-doc]
+dependencies=["run-doc"]
+command = "mv"
+args = ["target/doc", "docs"]
+
+[tasks.index-html]
+dependencies=["move-doc"]
+script = '''
+echo '<meta http-equiv=refresh content=0;url=pythagoras/index.html>' >> "docs/index.html"
+'''
+[tasks.default]
+alias = "index-html"

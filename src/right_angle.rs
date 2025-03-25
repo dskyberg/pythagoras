@@ -1,3 +1,62 @@
+//! [RightAngle] is designed to enable completion of right angle data based on the provided input.
+//! It provides a single method, [TryFrom<&RightAngleInput>].  Fill in whaever data you have, and [RightAngle] will
+//! fill in the rest.
+//!
+//! <br />
+//!
+//! [RightAngle] (and [RightAngleInput]) supports [serde](https://docs.rs/serde/latest/serde/).  So you can `Deserialize`
+//! [RightAngleInput] and  `Serialize` [RightAngle]. Perfect for API applications!
+//!
+//! <br />
+//!
+//! # Example
+//! ```rust
+//! use pythagoras::right_angle::{RightAngle, RightAngleInput};
+//!
+//! // Using the standard 3,4,5 right triangle
+//! const A:f32 = 3.0;
+//! const B:f32 = 4.0;
+//! const C:f32 = 5.0;
+//! const R: f32 = 0.6435011;
+//!
+//! const RIGHT_ANGLE: RightAngle = RightAngle {
+//!     rise: A,
+//!     run: B,
+//!     diagonal: C,
+//!     radians: R,
+//! };
+//!
+//! // Use one side and the angle to compete the rest of the right angle
+//! let input = RightAngleInput {
+//!     radians: Some(R),
+//!     rise: Some(A),
+//!     run: None,
+//!     diagonal: None,
+//! };
+//!
+//! let result = RightAngle::try_from(&input).expect("Failed to create RightAngle");
+//! assert_eq!(result, RIGHT_ANGLE);
+//!
+//!
+//! // Use two sides to complete the rest of the right angle
+//! let input = RightAngleInput {
+//!    radians: None,
+//!    rise: None,
+//!    run: Some(B),
+//!    diagonal: Some(C),
+//! };
+//!
+//! let result = RightAngle::try_from(&input).expect("Failed to create RightAngle");
+//! assert_eq!(result, RIGHT_ANGLE);
+//!
+//!
+//! // Create [RightAngle] by serializing [RightAngleInput] to
+//! // a json string,
+//!  let json = format!(r#"{{ "rise": {}, "run": {} }}"#, A, B);
+//!  let result = RightAngle::try_from(json.as_str()).expect("Failed to convert");
+//!  assert_eq!(result, RIGHT_ANGLE);
+//! ```
+
 use anyhow::Result;
 use serde::{Deserialize, Serialize};
 use thiserror::Error;
@@ -26,9 +85,13 @@ pub struct RightAngle {
 
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct RightAngleInput {
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub radians: Option<f32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub rise: Option<f32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub run: Option<f32>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub diagonal: Option<f32>,
 }
 
@@ -126,6 +189,37 @@ impl TryFrom<&RightAngleInput> for RightAngle {
     }
 }
 
+/// # Example
+/// Create [RightAngle] by serializing [RightAngleInput] to
+/// a json string,
+///
+/// ```rust
+/// use pythagoras::right_angle::RightAngle;
+///
+/// // Using the standard 3,4,5 right triangle
+/// const A:f32 = 3.0;
+/// const B:f32 = 4.0;
+/// const C:f32 = 5.0;
+/// const R: f32 = 0.6435011;
+///
+/// const RIGHT_ANGLE: RightAngle = RightAngle {
+///     rise: A,
+///     run: B,
+///     diagonal: C,
+///     radians: R,
+/// };
+///  let json = format!(r#"{{ "rise": {}, "run": {} }}"#, 3.0, 4.0);
+///  let result = RightAngle::try_from(json.as_str()).expect("Failed to convert");
+///  assert_eq!(result, RIGHT_ANGLE);
+/// ```
+impl TryFrom<&str> for RightAngle {
+    type Error = String;
+    fn try_from(input: &str) -> Result<Self, Self::Error> {
+        let input = serde_json::from_str::<RightAngleInput>(input).map_err(|e| e.to_string())?;
+        RightAngle::from_input(&input).map_err(|e| e.to_string())
+    }
+}
+
 impl RightAngle {
     /// There are 2 ways to use this method.
     /// 1. Given 1 side and the angle, find the other 2 sides
@@ -157,6 +251,7 @@ impl RightAngle {
 #[cfg(test)]
 mod tests {
     use super::*;
+
     const RADIANS_345: f32 = 0.6435011;
     const A_345: f32 = 3.0;
     const B_345: f32 = 4.0;
@@ -167,6 +262,14 @@ mod tests {
         diagonal: C_345,
         radians: RADIANS_345,
     };
+
+    #[test]
+    fn test_try_from_str() {
+        let json = format!(r#"{{ "rise": {}, "run": {} }}"#, A_345, B_345);
+        let result = RightAngle::try_from(json.as_str()).expect("Failed to convert");
+        assert_eq!(result, RIGHT_ANGLE);
+    }
+
     #[test]
     fn test_empty_err() {
         let input = RightAngleInput {

@@ -1,1 +1,53 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="API documentation for the Rust `right_angle` mod in crate `pythagoras`."><title>pythagoras::right_angle - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pythagoras" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (794c12416 2025-02-21)" data-channel="nightly" data-search-js="search-f7327375.js" data-settings-js="settings-6dad6058.js" ><script src="../../static.files/storage-3a5871a4.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-5332ae0c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../pythagoras/index.html">pythagoras</a><span class="version">0.1.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module right_<wbr>angle</a></h2><h3><a href="#structs">Module Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate pythagoras</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">pythagoras</a></div><h1>Module <span>right_angle</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/pythagoras/right_angle.rs.html#1-291">Source</a> </span></div><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.RightAngle.html" title="struct pythagoras::right_angle::RightAngle">Right<wbr>Angle</a></dt><dt><a class="struct" href="struct.RightAngleInput.html" title="struct pythagoras::right_angle::RightAngleInput">Right<wbr>Angle<wbr>Input</a></dt></dl></section></div></main></body></html>
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="RightAngle is designed to enable completion of right angle data based on the provided input. It provides a single method, TryFrom&#60;&#38;RightAngleInput&#62;.  Fill in whaever data you have, and RightAngle will fill in the rest."><title>pythagoras::right_angle - Rust</title><script>if(window.location.protocol!=="file:")document.head.insertAdjacentHTML("beforeend","SourceSerif4-Regular-6b053e98.ttf.woff2,FiraSans-Italic-81dc35de.woff2,FiraSans-Regular-0fe48ade.woff2,FiraSans-MediumItalic-ccf7e434.woff2,FiraSans-Medium-e1aa3f0a.woff2,SourceCodePro-Regular-8badfe75.ttf.woff2,SourceCodePro-Semibold-aa29a496.ttf.woff2".split(",").map(f=>`<link rel="preload" as="font" type="font/woff2" crossorigin href="../../static.files/${f}">`).join(""))</script><link rel="stylesheet" href="../../static.files/normalize-9960930a.css"><link rel="stylesheet" href="../../static.files/rustdoc-6c3ea77c.css"><meta name="rustdoc-vars" data-root-path="../../" data-static-root-path="../../static.files/" data-current-crate="pythagoras" data-themes="" data-resource-suffix="" data-rustdoc-version="1.87.0-nightly (794c12416 2025-02-21)" data-channel="nightly" data-search-js="search-f7327375.js" data-settings-js="settings-6dad6058.js" ><script src="../../static.files/storage-3a5871a4.js"></script><script defer src="../sidebar-items.js"></script><script defer src="../../static.files/main-5332ae0c.js"></script><noscript><link rel="stylesheet" href="../../static.files/noscript-893ab5e7.css"></noscript><link rel="alternate icon" type="image/png" href="../../static.files/favicon-32x32-6580c154.png"><link rel="icon" type="image/svg+xml" href="../../static.files/favicon-044be391.svg"></head><body class="rustdoc mod"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="mobile-topbar"><button class="sidebar-menu-toggle" title="show sidebar"></button></nav><nav class="sidebar"><div class="sidebar-crate"><h2><a href="../../pythagoras/index.html">pythagoras</a><span class="version">0.1.0</span></h2></div><div class="sidebar-elems"><section id="rustdoc-toc"><h2 class="location"><a href="#">Module right_<wbr>angle</a></h2><h3><a href="#">Sections</a></h3><ul class="block top-toc"><li><a href="#example" title="Example">Example</a></li></ul><h3><a href="#structs">Module Items</a></h3><ul class="block"><li><a href="#structs" title="Structs">Structs</a></li></ul></section><div id="rustdoc-modnav"><h2 class="in-crate"><a href="../index.html">In crate pythagoras</a></h2></div></div></nav><div class="sidebar-resizer"></div><main><div class="width-limiter"><rustdoc-search></rustdoc-search><section id="main-content" class="content"><div class="main-heading"><div class="rustdoc-breadcrumbs"><a href="../index.html">pythagoras</a></div><h1>Module <span>right_angle</span><button id="copy-path" title="Copy item path to clipboard">Copy item path</button></h1><rustdoc-toolbar></rustdoc-toolbar><span class="sub-heading"><a class="src" href="../../src/pythagoras/right_angle.rs.html#1-394">Source</a> </span></div><details class="toggle top-doc" open><summary class="hideme"><span>Expand description</span></summary><div class="docblock"><p><a href="struct.RightAngle.html" title="struct pythagoras::right_angle::RightAngle">RightAngle</a> is designed to enable completion of right angle data based on the provided input.
+It provides a single method, <a href="https://doc.rust-lang.org/nightly/core/convert/trait.TryFrom.html" title="trait core::convert::TryFrom">TryFrom&lt;&amp;RightAngleInput&gt;</a>.  Fill in whaever data you have, and <a href="struct.RightAngle.html" title="struct pythagoras::right_angle::RightAngle">RightAngle</a> will
+fill in the rest.</p>
+<br />
+<p><a href="struct.RightAngle.html" title="struct pythagoras::right_angle::RightAngle">RightAngle</a> (and <a href="struct.RightAngleInput.html" title="struct pythagoras::right_angle::RightAngleInput">RightAngleInput</a>) supports <a href="https://docs.rs/serde/latest/serde/">serde</a>.  So you can <code>Deserialize</code>
+<a href="struct.RightAngleInput.html" title="struct pythagoras::right_angle::RightAngleInput">RightAngleInput</a> and  <code>Serialize</code> <a href="struct.RightAngle.html" title="struct pythagoras::right_angle::RightAngle">RightAngle</a>. Perfect for API applications!</p>
+<br />
+<h2 id="example"><a class="doc-anchor" href="#example">§</a>Example</h2>
+<div class="example-wrap"><pre class="rust rust-example-rendered"><code><span class="kw">use </span>pythagoras::right_angle::{RightAngle, RightAngleInput};
+
+<span class="comment">// Using the standard 3,4,5 right triangle
+</span><span class="kw">const </span>A:f32 = <span class="number">3.0</span>;
+<span class="kw">const </span>B:f32 = <span class="number">4.0</span>;
+<span class="kw">const </span>C:f32 = <span class="number">5.0</span>;
+<span class="kw">const </span>R: f32 = <span class="number">0.6435011</span>;
+
+<span class="kw">const </span>RIGHT_ANGLE: RightAngle = RightAngle {
+    rise: A,
+    run: B,
+    diagonal: C,
+    radians: R,
+};
+
+<span class="comment">// Use one side and the angle to compete the rest of the right angle
+</span><span class="kw">let </span>input = RightAngleInput {
+    radians: <span class="prelude-val">Some</span>(R),
+    rise: <span class="prelude-val">Some</span>(A),
+    run: <span class="prelude-val">None</span>,
+    diagonal: <span class="prelude-val">None</span>,
+};
+
+<span class="kw">let </span>result = RightAngle::try_from(<span class="kw-2">&amp;</span>input).expect(<span class="string">"Failed to create RightAngle"</span>);
+<span class="macro">assert_eq!</span>(result, RIGHT_ANGLE);
+
+
+<span class="comment">// Use two sides to complete the rest of the right angle
+</span><span class="kw">let </span>input = RightAngleInput {
+   radians: <span class="prelude-val">None</span>,
+   rise: <span class="prelude-val">None</span>,
+   run: <span class="prelude-val">Some</span>(B),
+   diagonal: <span class="prelude-val">Some</span>(C),
+};
+
+<span class="kw">let </span>result = RightAngle::try_from(<span class="kw-2">&amp;</span>input).expect(<span class="string">"Failed to create RightAngle"</span>);
+<span class="macro">assert_eq!</span>(result, RIGHT_ANGLE);
+
+
+<span class="comment">// Create [RightAngle] by serializing [RightAngleInput] to
+// a json string,
+ </span><span class="kw">let </span>json = <span class="macro">format!</span>(<span class="string">r#"{{ "rise": {}, "run": {} }}"#</span>, A, B);
+ <span class="kw">let </span>result = RightAngle::try_from(json.as_str()).expect(<span class="string">"Failed to convert"</span>);
+ <span class="macro">assert_eq!</span>(result, RIGHT_ANGLE);</code></pre></div>
+</div></details><h2 id="structs" class="section-header">Structs<a href="#structs" class="anchor">§</a></h2><dl class="item-table"><dt><a class="struct" href="struct.RightAngle.html" title="struct pythagoras::right_angle::RightAngle">Right<wbr>Angle</a></dt><dt><a class="struct" href="struct.RightAngleInput.html" title="struct pythagoras::right_angle::RightAngleInput">Right<wbr>Angle<wbr>Input</a></dt></dl></section></div></main></body></html>
