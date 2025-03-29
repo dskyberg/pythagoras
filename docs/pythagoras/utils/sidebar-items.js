@@ -1,1 +1,0 @@
-window.SIDEBAR_ITEMS = {"fn":["ab_c","ab_r","ac_b","ac_r","bc_a","bc_r","ra_b","ra_bc","ra_c","rb_a","rb_ac","rb_c","rc_a","rc_ab","rc_b"]};
